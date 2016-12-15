@@ -58,16 +58,21 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("edit")
-    public String submitEdit(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute UserDTO userDTO, Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+    public String submitEdit(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute("user") UserDTO userDTO, Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
         UserDTO user = userFacade.findByEmail(userDetails.getUsername());
 
-        user.setName(userDTO.getName());
-        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        if (userDTO.getName() != null && !userDTO.getName().isEmpty()) {
+            user.setName(userDTO.getName());
+        }
+
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        }
 
         model.addAttribute("user", userFacade.save(user));
 
         redirectAttributes.addFlashAttribute("alert_success", "User details were saved.");
-        return "user/edit";
+        return "redirect:" + uriBuilder.path("/user/edit").toUriString();
     }
 
     @ResponseBody
@@ -79,19 +84,19 @@ public class UserController {
     }
 
     @PreAuthorize("isAnonymous()")
-    @RequestMapping(value="login", method = RequestMethod.GET)
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     public String loginGet() {
         return "login";
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping(value="signup")
+    @GetMapping(value = "signup")
     public String signUp() {
         return "signup";
     }
 
     @PreAuthorize("isAnonymous()")
-    @PostMapping(value="signup")
+    @PostMapping(value = "signup")
     public String submitSignUp() {
         // bCryptPasswordEncoder.encode(userRegistrationForm.getPassword())
         return "lol";

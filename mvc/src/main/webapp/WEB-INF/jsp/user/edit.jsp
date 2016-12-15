@@ -18,16 +18,16 @@
     <div class="col-md-6">
         <form:form method="post" modelAttribute="user" action="${pageContext.request.contextPath}/user/edit">
             <div class="form-group">
-                <label for="name">Name</label>
-                <form:input path="name" cssClass="form-control" id="name" placeholder="Name" disabled="true"/>
-            </div>
-            <div class="form-group">
                 <label for="email">Email</label>
                 <form:input path="email" cssClass="form-control" id="email" placeholder="Email" disabled="true"/>
             </div>
             <div class="form-group">
+                <label for="name">Name</label>
+                <form:input path="name" cssClass="form-control" id="name" placeholder="Name"/>
+            </div>
+            <div class="form-group">
                 <label for="password">Password</label>
-                <form:password path="password" cssClass="form-control" id="password" placeholder="Password" />
+                <form:password path="password" cssClass="form-control" id="password" placeholder="Password"/>
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
         </form:form>
