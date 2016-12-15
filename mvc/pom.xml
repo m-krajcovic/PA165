@@ -40,13 +40,10 @@
             </plugin>
         </plugins>
     </build>
-
-
-
     <dependencies>
         <dependency>
             <groupId>cz.muni.pa165.pneuservis</groupId>
-            <artifactId>service</artifactId>
+            <artifactId>sample-data</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
