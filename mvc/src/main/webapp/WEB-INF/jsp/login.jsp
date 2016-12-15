@@ -1,23 +1,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Spring Security Example </title>
-</head>
-<body>
-<c:if test="${not empty error}">
-    <div class="error">${error}</div>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<my:template title="Login">
+<jsp:attribute name="body">
+<c:if test="${param.error ne null}">
+    <div class="alert alert-danger" role="alert">Failed to sign in</div>
 </c:if>
-<c:if test="${not empty msg}">
-    <div class="msg">${msg}</div>
-</c:if>
-<form action="${pageContext.request.contextPath}/login" method="post">
-    <input type="hidden"
-           name="${_csrf.parameterName}"
-           value="${_csrf.token}"/>
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
-</body>
-</html>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <form action="${pageContext.request.contextPath}/login" method="post" class="">
+                <sec:csrfInput/>
+                <div class="form-group"><label for="username"> Email address : <input type="text" class="form-control"
+                                                                                  name="username" id="username"/>
+                </label></div>
+                <div class="form-group"><label for="password"> Password: <input type="password" class="form-control"
+                                                                                name="password" id="password"/> </label>
+                </div>
+                <div><input type="submit" class="btn btn-default" value="Sign In"/></div>
+            </form>
+        </div>
+    </div>
+</jsp:attribute>
+</my:template>

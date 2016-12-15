@@ -1,15 +1,24 @@
 package cz.muni.pa165.pneuservis.mvc.controller;
 
-import cz.muni.pa165.pneuservis.api.dto.RoleDTO;
 import cz.muni.pa165.pneuservis.api.dto.UserDTO;
 import cz.muni.pa165.pneuservis.api.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,50 +34,64 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @ResponseBody
-    @RequestMapping(value="createRandom", method = RequestMethod.GET)
-    public String createRandomPeople() {
-        UserDTO admin = new UserDTO();
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("list")
+    public String getAll(Model model) {
+        List<UserDTO> users = userFacade.findAll();
+        model.addAttribute("users", users);
+        return "user/list";
+    }
 
-        admin.setId(1L);
-        admin.setEmail("admin@admin.com");
-        admin.setName("Admin");
-        admin.setPassword(bCryptPasswordEncoder.encode("password"));
-        admin.setRoles(Collections.singletonList(RoleDTO.ADMIN));
+    @GetMapping("/")
+    public String currentUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        model.addAttribute("user", userDetails == null ? "Anon" : userDetails.getUsername());
+        return "user/view";
+    }
 
-        userFacade.save(admin);
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("edit")
+    public String editUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        UserDTO user = userFacade.findByEmail(userDetails.getUsername());
+        model.addAttribute("user", user);
+        return "user/edit";
+    }
 
-        return "lololo";
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("edit")
+    public String submitEdit(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute UserDTO userDTO, Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+        UserDTO user = userFacade.findByEmail(userDetails.getUsername());
+
+        user.setName(userDTO.getName());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+
+        model.addAttribute("user", userFacade.save(user));
+
+        redirectAttributes.addFlashAttribute("alert_success", "User details were saved.");
+        return "user/edit";
     }
 
     @ResponseBody
-    @GetMapping("getAll")
-    public String getAll() {
-        String output=  "";
-        List<UserDTO> all = userFacade.findAll();
-        for (UserDTO userDTO : all) {
-            output += userDTO.getEmail() + " ";
-        }
-        return output;
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("delete/{id}")
+    public String delete(@PathVariable long id) {
+        userFacade.delete(id);
+        return "{response: 'Success'}";
     }
 
-    @ResponseBody
-    @RequestMapping(value="getCurrent", method = RequestMethod.GET)
-    public String getCurrentUser() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-
+    @PreAuthorize("isAnonymous()")
     @RequestMapping(value="login", method = RequestMethod.GET)
     public String loginGet() {
         return "login";
     }
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping(value="signup")
     public String signUp() {
-        return "lol";
+        return "signup";
     }
 
-    @PostMapping
+    @PreAuthorize("isAnonymous()")
+    @PostMapping(value="signup")
     public String submitSignUp() {
         // bCryptPasswordEncoder.encode(userRegistrationForm.getPassword())
         return "lol";

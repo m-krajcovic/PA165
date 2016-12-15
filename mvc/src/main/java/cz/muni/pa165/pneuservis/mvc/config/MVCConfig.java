@@ -12,7 +12,9 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+;
 
 /**
  * Created by xjavorka on 14.12.16.

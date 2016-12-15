@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +17,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
  * @author Michal Krajcovic <mkrajcovic@mail.muni.cz>
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -50,17 +52,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.
                 addFilterBefore(filter, CsrfFilter.class)
                 .authorizeRequests()
-//                .antMatchers("/", "/user/**").permitAll()
-                .antMatchers("/user/getCurrent").authenticated()
                 .and()
                 .logout()
-                .logoutUrl("/user/logout/")
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/user/login")
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/user/getCurrent")
+                .defaultSuccessUrl("/user/")
                 .failureUrl("/user/login?error")
                 .usernameParameter("username")
                 .passwordParameter("password")

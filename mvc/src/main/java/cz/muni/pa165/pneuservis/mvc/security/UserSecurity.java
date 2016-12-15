@@ -1,6 +1,5 @@
 package cz.muni.pa165.pneuservis.mvc.security;
 
-import cz.muni.pa165.pneuservis.api.dto.RoleDTO;
 import cz.muni.pa165.pneuservis.api.dto.UserDTO;
 import cz.muni.pa165.pneuservis.api.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
