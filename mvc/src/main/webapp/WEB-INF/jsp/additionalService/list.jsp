@@ -31,7 +31,7 @@
 
                     <a href="${pageContext.request.contextPath}/additionalService/edit/${as.id}"
                        class="btn btn-default">Edit</a>
-                    <a href="${pageContext.request.contextPath}/additionalService/edit/${as.id}"
+                    <a href="${pageContext.request.contextPath}/additionalService/delete/${as.id}"
                        class="btn btn-danger">Delete</a>
                 </td>
             </tr>

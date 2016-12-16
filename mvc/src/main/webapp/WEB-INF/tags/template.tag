@@ -22,7 +22,7 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
           crossorigin="anonymous">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"/>
     <jsp:invoke fragment="head"/>
 </head>
 <body>
@@ -77,49 +77,64 @@
 </nav>
 
 <div class="container">
-
-    <!-- page title -->
-    <c:if test="${not empty title}">
-        <div class="page-header">
-            <h1><c:out value="${title}"/></h1>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- page title -->
+            <c:if test="${not empty title}">
+                <div class="page-header">
+                    <h1><c:out value="${title}"/></h1>
+                </div>
+            </c:if>
         </div>
-    </c:if>
+    </div>
 
-    <!-- alerts -->
-    <c:if test="${not empty alert_danger}">
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <c:out value="${alert_danger}"/></div>
-    </c:if>
-    <c:if test="${not empty alert_info}">
-        <div class="alert alert-info" role="alert"><c:out value="${alert_info}"/></div>
-    </c:if>
-    <c:if test="${not empty alert_success}">
-        <div class="alert alert-success" role="alert"><c:out value="${alert_success}"/></div>
-    </c:if>
-    <c:if test="${not empty alert_warning}">
-        <div class="alert alert-warning" role="alert"><c:out value="${alert_warning}"/></div>
-    </c:if>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- alerts -->
+            <c:if test="${not empty alert_danger}">
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <c:out value="${alert_danger}"/></div>
+            </c:if>
+            <c:if test="${not empty alert_info}">
+                <div class="alert alert-info" role="alert"><c:out value="${alert_info}"/></div>
+            </c:if>
+            <c:if test="${not empty alert_success}">
+                <div class="alert alert-success" role="alert"><c:out value="${alert_success}"/></div>
+            </c:if>
+            <c:if test="${not empty alert_warning}">
+                <div class="alert alert-warning" role="alert"><c:out value="${alert_warning}"/></div>
+            </c:if>
+        </div>
+    </div>
 
     <!-- page body -->
-    <jsp:invoke fragment="body"/>
+    <div class="row">
+        <div class="col-lg-12">
+            <jsp:invoke fragment="body"/>
+        </div>
+    </div>
 
     <!-- footer -->
-    <footer class="footer">
-        <hr/>
-        <div class="container">
-            <p class="text-muted">&copy; FI MUNI 2016</p>
-            <b>Authors:</b>
-            <ul>
-                <li>Krajčovič Michal</li>
-                <li>Peter Javorka</li>
-                <li>Spišiak Martin</li>
-                <li>Trávníček Michal</li>
-            </ul>
+    <div class="row">
+        <div class="col-lg-12">
+            <footer class="footer">
+                <hr/>
+                <div class="container">
+                    <p class="text-muted">&copy; FI MUNI 2016</p>
+                    <b>Authors:</b>
+                    <ul>
+                        <li>Krajčovič Michal</li>
+                        <li>Peter Javorka</li>
+                        <li>Spišiak Martin</li>
+                        <li>Trávníček Michal</li>
+                    </ul>
+                </div>
+            </footer>
         </div>
-    </footer>
-
+    </div>
 </div>
+
 <!-- javascripts placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
