@@ -1,4 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: xjavorka
@@ -6,10 +9,9 @@
   Time: 15:18
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<my:template title="Additional services">
+<jsp:attribute name="body">
 <div class="container">
-    <h2>Additional services</h2>
-    <hr/>
     <table class="table">
         <thead>
         <tr>
@@ -26,11 +28,16 @@
                 <td><c:out value="${as.description}"/></td>
                 <td><c:out value="${as.price}"/></td>
                 <td>
-                    <a href="/product/view/${as.id}" class="btn btn-primary">Edit</a>
-                    <a href="/product/view/${as.id}" class="btn btn-primary">Delete</a>
+
+                    <a href="${pageContext.request.contextPath}/additionalService/edit/${as.id}"
+                       class="btn btn-default">Edit</a>
+                    <a href="${pageContext.request.contextPath}/additionalService/edit/${as.id}"
+                       class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 </div>
+</jsp:attribute>
+</my:template>
