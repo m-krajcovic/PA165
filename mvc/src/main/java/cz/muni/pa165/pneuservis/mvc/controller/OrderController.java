@@ -81,10 +81,7 @@ public class OrderController {
             Model model,
             UriComponentsBuilder uriBuilder) {
 
-        logger.info("Saving Order: {}", order);
-//        if (bindingResult.hasErrors()) {
-//            return "orders/edit";
-//        }
+        logger.info("Saving Order: {}", order);      
         try {
             order.setUser(user);
             orderFacade.save(order);
@@ -93,24 +90,7 @@ public class OrderController {
         }
         return "redirect:" + uriBuilder.path("/orders/").toUriString();
     }
-//
-//    @RequestMapping(value = "/save", method = RequestMethod.POST)
-//    public String saveOrder(@Valid @ModelAttribute("order") OrderDTO order,
-//            BindingResult bindingResult,
-//            Model model,
-//            UriComponentsBuilder uriBuilder) {
-//
-//        logger.info("Saving Order: {}", order);
-//        if (bindingResult.hasErrors()) {
-//            return "orders/edit";
-//        }
-//        try {
-//            orderFacade.save(order);
-//        } catch (Exception e) {
-//            logger.error(e.toString());
-//        }
-//        return "redirect:" + uriBuilder.path("/orders/").toUriString();
-//    }
+
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String listOrders(Model model) {
