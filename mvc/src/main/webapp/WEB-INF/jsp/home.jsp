@@ -16,11 +16,10 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1>Hi!</h1>
+        <h1>Welcome to TIRESHOP (TM)!</h1>
         <p>Welcome, ${user}</p>
     </div>
-    <p>This is some text.</p>
-    <p>This is another text.</p>
+    <p>Feel free to browse our selection of tires & additional services.</p>
 </div>
 </jsp:attribute>
 </my:template>

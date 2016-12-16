@@ -38,6 +38,25 @@
                     <path>/pa165</path>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId> 
+                <artifactId>jetty-maven-plugin</artifactId> 
+                <version>9.2.4.v20141103</version> 
+                <configuration>
+                    <httpConnector>
+                        <!--  make jetty listen on 127.0.0.1 for better security 
+                        --> 
+                        <!-- host>127.0.0.1</host
+                        --> 
+                    </httpConnector>
+                    <scanIntervalSeconds>3</scanIntervalSeconds> 
+                    <webAppConfig>
+                        <!--  defaultsDescriptor>src/test/resources/jetty-maven-plugin-webdefault.xml</defaultsDescriptor 
+                        --> 
+                    </webAppConfig>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
     <dependencies>
