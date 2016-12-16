@@ -12,12 +12,14 @@
         <module>persistence</module>
         <module>service</module>
         <module>api</module>
+        <module>rest</module>
         <module>mvc</module>
         <module>sample-data</module>
     </modules>
     <packaging>pom</packaging>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.version>4.3.4.RELEASE</spring.version>
