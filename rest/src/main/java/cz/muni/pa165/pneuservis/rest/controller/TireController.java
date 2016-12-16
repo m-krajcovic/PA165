@@ -65,6 +65,19 @@ public class TireController extends BaseController {
         return tireFacade.findByTireType(tireTypeDTO);
     }
 
+    @RequestMapping(value = "/find-three-best-selling", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Returns three tires best selling tires", notes = "Returns three best selling tires in JSON format", response = TireDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful retrieval of three best selling tires", response = TireDTO.class),
+            @ApiResponse(code = 500, message = "Internal server error"),
+            @ApiResponse(code = 503, message = "Service temporarily unavailable")}
+    )
+    public List<TireDTO> findThreeBestSelling() {
+        List<TireDTO> threeBestSelling = new ArrayList<TireDTO>();
+        threeBestSelling.addAll(tireFacade.findThreeBestSelling());
+        return threeBestSelling;
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
     @ApiOperation(value = "Adds tire to a database", notes = "Creates a tire and sends an acknowledgement")
     @ApiResponses(value = {

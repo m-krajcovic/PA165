@@ -61,7 +61,8 @@ public class TireServiceImpl implements TireService {
         Collections.sort(list, (o1, o2) -> (o2.getValue()).compareTo(o1.getValue()));
 
         List<Tire> threeTires = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        int maxTires = (list.size() > 3)?3:list.size();
+        for (int i = 0; i < maxTires; i++) {
             threeTires.add(findOne(list.get(i).getKey()));
         }
         return threeTires;

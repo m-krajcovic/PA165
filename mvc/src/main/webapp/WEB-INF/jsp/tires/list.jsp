@@ -4,14 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--
-  Created by IntelliJ IDEA.
-  User: xjavorka
-  Date: 14.12.16
-  Time: 15:18
-  To change this template use File | Settings | File Templates.
---%>
-<my:template title="Tires">
+<my:template title="${selected == 1 ? 'All tires' : 'Best selling tires'}">
 <jsp:attribute name="body">
 <div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -31,6 +24,21 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="tire-filters">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>List tires</h2>
+            <select class="form-control" id="list-tires">
+                <option ${selected == 1 ? 'selected' : ''} value="${pageContext.request.contextPath}/tires/">All tires</option>
+                <option ${selected == 2 ? 'selected' : ''} value="${pageContext.request.contextPath}/tires/three-best-selling">Best selling</option>
+            </select>
+        </div>
+        <div class="col-lg-6">
+
+        </div>
     </div>
 </div>
 
@@ -65,13 +73,22 @@
     </c:forEach>
     </tbody>
 </table>
-<div class="text-right border-top">
+<div class="text-right border-top createButtonWrapper">
     <a href="${pageContext.request.contextPath}/tires/new" class="btn btn-primary">Add tire</a>
 </div>
 
 </jsp:attribute>
 <jsp:attribute name="script">
     <script>
+        $(function(){
+            $('#list-tires').on('change', function () {
+                var url = $(this).val();
+                if (url) {
+                    window.location = url;
+                }
+                return false;
+            });
+        });
         $('#confirm-delete-modal').on('show.bs.modal', function(e) {
             $(this).find('.delete-confirm').attr('action', $(e.relatedTarget).data('href'));
             $(this).find('.name-placeholder').text($(e.relatedTarget).data('name'));

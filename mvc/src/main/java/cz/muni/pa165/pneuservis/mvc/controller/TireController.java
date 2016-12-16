@@ -30,6 +30,7 @@ public class TireController {
     public String getAllTires(Model model){
         logger.info("Showing all tires.");
         model.addAttribute("tires", tireFacade.findAll());
+        model.addAttribute("selected", 1);
         return "tires/list";
     }
 
@@ -43,6 +44,14 @@ public class TireController {
     public String editAdditionalService(@PathVariable Long id, Model model) {
         model.addAttribute("tire", tireFacade.findOne(id));
         return "tires/edit";
+    }
+
+    @GetMapping("/three-best-selling")
+    public String getThreeBestSelling(Model model){
+        logger.info("Showing three best selling tires.");
+        model.addAttribute("tires", tireFacade.findThreeBestSelling());
+        model.addAttribute("selected", 2);
+        return "tires/list";
     }
 
     @PostMapping("/save")

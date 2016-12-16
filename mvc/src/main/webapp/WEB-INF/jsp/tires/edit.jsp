@@ -7,7 +7,7 @@
 
 <my:template title="${tire.id == null ? 'New tire' : 'Edit tire'}">
 <jsp:attribute name="body">
-<div class="col-lg-12">
+<div>
     <form:form id="${tire.id}" method="post" modelAttribute="tire"
                action="${pageContext.request.contextPath}/tires/save">
     <form:hidden path="id"  style="display:none"/>
