@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--
@@ -10,7 +11,7 @@
   Time: 15:18
   To change this template use File | Settings | File Templates.
 --%>
-<my:template title="Additional services">
+<my:template titleMessageKey="title.as.list" activeNav="as">
 <jsp:attribute name="body">
 <div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -19,13 +20,13 @@
             <sec:csrfInput/>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Confirmation</h4>
+                    <h4><f:message key="label.confirmation"/></h4>
                 </div>
                 <div class="modal-body">
-                    <p>Do you really want to delete an Additional service with the name <span class="name-placeholder"></span> ?</p>
+                    <p><f:message key="label.as.delete.confirmation"/><span class="name-placeholder"></span> ?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><f:message key="button.cancel"/></button>
                     <input type="submit" value="Delete" class="btn btn-danger">
                 </div>
             </div>
@@ -36,9 +37,9 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
+            <th><f:message key="label.name"/></th>
+            <th><f:message key="label.description"/></th>
+            <th><f:message key="label.price"/></th>
             <th></th>
         </tr>
         </thead>
@@ -51,9 +52,9 @@
                 <sec:authorize access="hasAuthority('ADMIN')">
                 <td>
                     <a href="${pageContext.request.contextPath}/additionalService/edit/${as.id}"
-                       class="btn btn-default">Edit</a>
+                       class="btn btn-default"><f:message key="button.edit"/></a>
                     <a class="btn btn-danger" data-href="${pageContext.request.contextPath}/additionalService/delete/${as.id}"
-                       data-toggle="modal" data-target="#confirm-delete-modal" data-name="${as.name}">Delete</a>
+                       data-toggle="modal" data-target="#confirm-delete-modal" data-name="${as.name}"><f:message key="button.delete"/></a>
                 </td>
                 </sec:authorize>
             </tr>
@@ -62,7 +63,7 @@
     </table>
     <sec:authorize access="hasAuthority('ADMIN')">
     <div class="text-right border-top createButtonWrapper">
-        <a href="${pageContext.request.contextPath}/additionalService/new" class="btn btn-primary">Add Additional service</a>
+        <a href="${pageContext.request.contextPath}/additionalService/new" class="btn btn-primary"><f:message key="button.as.add"/></a>
     </div>
     </sec:authorize>
 </div>

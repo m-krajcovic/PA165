@@ -2,8 +2,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
+<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<my:template title="Users">
+<my:template titleMessageKey="title.user.list" activeNav="userManagement">
 <jsp:attribute name="body">
 
 <div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -13,14 +14,14 @@
             <sec:csrfInput/>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Confirmation</h4>
+                    <h4><f:message key="label.confirmation"/></h4>
                 </div>
                 <div class="modal-body">
-                    <p>Do you really want to delete person with email <span class="email-placeholder"></span> ?</p>
+                    <p><f:message key="label.user.delete.confirmation"/><span class="email-placeholder"></span> ?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <input type="submit" value="Delete" class="btn btn-danger">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><f:message key="button.cancel"/></button>
+                    <input type="submit" value="<f:message key="button.delete"/>" class="btn btn-danger">
                 </div>
             </div>
         </form>
@@ -30,8 +31,8 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Email</th>
+            <th><f:message key="label.name"/></th>
+            <th><f:message key="label.email"/></th>
             <th></th>
         </tr>
         </thead>
@@ -41,9 +42,9 @@
                 <td><c:out value="${user.name}"/></td>
                 <td><c:out value="${user.email}"/></td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/user/edit/${user.id}" class="btn btn-primary">Edit</a>
+                    <a href="${pageContext.request.contextPath}/user/edit/${user.id}" class="btn btn-default">Edit</a>
                     <a class="btn btn-danger" data-href="${pageContext.request.contextPath}/user/delete/${user.id}"
-                       data-toggle="modal" data-target="#confirm-delete-modal" data-email="${user.email}">Delete</a>
+                       data-toggle="modal" data-target="#confirm-delete-modal" data-email="${user.email}"><f:message key="button.delete"/></a>
                 </td>
             </tr>
         </c:forEach>

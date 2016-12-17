@@ -6,7 +6,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-<my:template title="${additionalService.id == null ? 'New Additional service' : 'Edit Additional service'}">
+<my:template titleMessageKey="${additionalService.id == null ? 'title.as.new' : 'title.as.edit'}" activeNav="as">
 <jsp:attribute name="body">
 <div class="container">
     <div class="col-md-6">
@@ -14,23 +14,23 @@
                    action="${pageContext.request.contextPath}/additionalService/save">
         <form:hidden path="id"  style="display:none"/>
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name"><f:message key="label.name"/></label>
             <form:input path="name" cssClass="form-control" id="name" placeholder="Name"/>
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
+            <label for="description"><f:message key="label.description"/></label>
             <form:textarea path="description" cssClass="form-control" rows="3" id="description"
                            placeholder="Description"/>
         </div>
         <div class="form-group">
-            <label for="price">Price</label>
+            <label for="price"><f:message key="label.price"/></label>
             <div class="input-group">
                 <form:input path="price" cssClass="form-control" id="price" placeholder="Price"
                             aria-describedby="currency-addon"/>
                 <span class="input-group-addon" id="currency-addon">Kc</span>
             </div>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default"><f:message key="button.submit"/></button>
         </form:form>
     </div>
 </div>

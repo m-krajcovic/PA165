@@ -8,8 +8,8 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1>Access denied!</h1>
-        <p>You are not welcome here, please turn around 360 degrees and walk away.</p>
+        <h1><f:message key="error.access.denied.title"/></h1>
+        <p><f:message key="error.access.denied.text"/></p>
     </div>
 </div>
 </jsp:attribute>

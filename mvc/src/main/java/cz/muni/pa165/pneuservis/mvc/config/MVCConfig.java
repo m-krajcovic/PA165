@@ -4,16 +4,14 @@ import cz.muni.pa165.pneuservis.data.config.SampleDataConfiguration;
 import cz.muni.pa165.pneuservis.mvc.controller.AdditionalServiceController;
 import cz.muni.pa165.pneuservis.mvc.security.WebSecurityConfiguration;
 import cz.muni.pa165.pneuservis.service.config.ServiceConfiguration;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 ;
@@ -52,4 +50,14 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 
+    /**
+     * Provides localized messages.
+     */
+    @Bean
+    public MessageSource messageSource() {
+//        log.debug("registering ResourceBundle 'Texts' for messages");
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("Texts");
+        return messageSource;
+    }
 }

@@ -2,16 +2,16 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<my:template title="Home">
+<my:template activeNav="home">
 <jsp:attribute name="body">
 
 <div class="container">
     <div class="jumbotron">
-        <h1>Welcome to TIRESHOP (TM)!</h1>
-        <p>Welcome, ${user}</p>
+        <h1><f:message key="jumbotron.title"/></h1>
+        <p><f:message key="jumbotron.text"><f:param value="${user}"/></f:message></p>
     </div>
-    <p>Feel free to browse our selection of tires & additional services.</p>
 </div>
 </jsp:attribute>
 </my:template>
