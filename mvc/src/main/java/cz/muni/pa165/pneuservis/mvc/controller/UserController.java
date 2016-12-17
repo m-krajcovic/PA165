@@ -40,12 +40,6 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/")
-    public String currentUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        model.addAttribute("user", userDetails == null ? "Anon" : userDetails.getUsername());
-        return "user/view";
-    }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("edit")
     public String editSelf(@AuthenticationPrincipal UserDetails userDetails, Model model) {

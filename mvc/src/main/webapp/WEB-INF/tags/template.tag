@@ -1,8 +1,10 @@
 <%@ tag pageEncoding="utf-8" dynamic-attributes="dynattrs" trimDirectiveWhitespaces="true" %>
 <%@ attribute name="title" required="false" %>
+<%@ attribute name="titleMessageKey" required="false" %>
 <%@ attribute name="head" fragment="true" %>
 <%@ attribute name="body" fragment="true" required="true" %>
 <%@ attribute name="script" fragment="true" required="false" %>
+<%@attribute name="activeNav" required="false" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -15,7 +17,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><c:out value="${title}"/></title>
+    <c:choose>
+        <c:when test="${not empty titleMessageKey}">
+            <title><f:message key="${titleMessageKey}"/></title>
+        </c:when>
+        <c:otherwise>
+            <title><c:out value="${title}"/></title>
+        </c:otherwise>
+    </c:choose>
+
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"/>
@@ -37,18 +47,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/">Pneuservis</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/"><f:message key="navigation.project"/> </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="${pageContext.request.contextPath}/">Home</a></li>
-                <li><a href="${pageContext.request.contextPath}/tires/">Tires</a></li>
-                <li><a href="${pageContext.request.contextPath}/additionalService/">Additional services</a></li>
+                <li class="${activeNav eq "home" ? "active" : ""}"><a href="${pageContext.request.contextPath}/"><f:message key="navigation.home"/></a></li>
+                <li class="${activeNav eq "tires" ? "active" : ""}"><a href="${pageContext.request.contextPath}/tires/"><f:message key="navigation.tires"/></a></li>
+                <li class="${activeNav eq "as" ? "active" : ""}"><a href="${pageContext.request.contextPath}/additionalService/"><f:message key="navigation.additional.services"/></a></li>
                 <sec:authorize access="hasAuthority('ADMIN')">
-                <li><a href="${pageContext.request.contextPath}/user/list">User management</a></li>
-                <li><a href="${pageContext.request.contextPath}/orders/all">Orders management</a></li>
+                <li class="${activeNav eq "userManagement" ? "active" : ""}"><a href="${pageContext.request.contextPath}/user/list"><f:message key="navigation.admin.user.management"/></a></li>
+                <li class="${activeNav eq "orderManagement" ? "active" : ""}"><a href="${pageContext.request.contextPath}/orders/all"><f:message key="navigation.admin.orders.management"/></a></li>
                 </sec:authorize>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -57,19 +67,19 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false"><sec:authentication property="principal.username"/><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="${pageContext.request.contextPath}/orders/">My orders</a></li>
-                            <li><a href="${pageContext.request.contextPath}/user/edit">My profile</a></li>
+                            <li><a href="${pageContext.request.contextPath}/orders/"><f:message key="navigation.user.orders"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/user/edit"><f:message key="navigation.user.profile"/></a></li>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                                <a href="#" onclick="document.getElementById('logoutForm').submit();"><f:message key="button.logout"/></a>
                             </li>
                         </ul>
 
                     </li>
                 </sec:authorize>
                 <sec:authorize access="isAnonymous()">
-                    <li><a href="${pageContext.request.contextPath}/login">Login</a></li>
-                    <li><a href="${pageContext.request.contextPath}/signup">Sign up</a></li>
+                    <li><a href="${pageContext.request.contextPath}/login"><f:message key="button.login"/></a></li>
+                    <li><a href="${pageContext.request.contextPath}/signup"><f:message key="button.signup"/></a></li>
                 </sec:authorize>
             </ul>
         </div>
@@ -80,11 +90,21 @@
     <div class="row">
         <div class="col-lg-12">
             <!-- page title -->
-            <c:if test="${not empty title}">
-                <div class="page-header">
-                    <h1><c:out value="${title}"/></h1>
-                </div>
-            </c:if>
+            <c:choose>
+                <c:when test="${not empty titleMessageKey}">
+                    <div class="page-header">
+                        <h1><f:message key="${titleMessageKey}"/></h1>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${not empty title}">
+                        <div class="page-header">
+                            <h1><c:out value="${title}"/></h1>
+                        </div>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
 
