@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
@@ -59,8 +60,9 @@ public class OrderFacadeTest extends AbstractTestNGSpringContextTests {
 
     @BeforeMethod
     public void initDTO(){
-        createOrderDTO();
-        createOrder();
+        Date time = Calendar.getInstance().getTime();
+        createOrderDTO(time);
+        createOrder(time);
 
         List<Order> orders = Collections.singletonList(order);
         List<OrderDTO> orderDTOs = Collections.singletonList(orderDTO);
@@ -96,7 +98,7 @@ public class OrderFacadeTest extends AbstractTestNGSpringContextTests {
         verify(orderService).delete(1L);
     }
 
-    private void createOrderDTO(){
+    private void createOrderDTO(Date time){
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail("customer1@mail.muni.cz");
         userDTO.setName("Customer 1");
@@ -119,11 +121,11 @@ public class OrderFacadeTest extends AbstractTestNGSpringContextTests {
         orderDTO.setPrice(new BigDecimal(3000));
         orderDTO.setTire(tireDTO);
         orderDTO.setTireQuantity(4);
-        orderDTO.setDateCreated(Calendar.getInstance().getTime());
+        orderDTO.setDateCreated(time);
         orderDTO.setState(OrderStateDTO.RECEIVED);
     }
 
-    private void createOrder(){
+    private void createOrder(Date time){
         User user = new User();
         user.setEmail("customer1@mail.muni.cz");
         user.setName("Customer 1");
@@ -146,7 +148,7 @@ public class OrderFacadeTest extends AbstractTestNGSpringContextTests {
         order.setPrice(new BigDecimal(3000));
         order.setTire(tire);
         order.setTireQuantity(4);
-        order.setDateCreated(Calendar.getInstance().getTime());
+        order.setDateCreated(time);
         order.setState(OrderState.RECEIVED);
     }
 }
