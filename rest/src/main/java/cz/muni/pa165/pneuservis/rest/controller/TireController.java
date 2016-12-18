@@ -59,7 +59,7 @@ public class TireController extends BaseController {
             @ApiResponse(code = 503, message = "Service temporarily unavailable")}
     )
     public List<TireDTO> findByTireType(
-            @ApiParam(name = "Tire type", value = "One of the TireTypeDTO enum values", required = true)
+            @ApiParam(name = "input", value = "One of the TireTypeDTO enum values", required = true)
             @RequestParam TireTypeDTO input) {
         TireTypeDTO tireTypeDTO = input;
         return tireFacade.findByTireType(tireTypeDTO);

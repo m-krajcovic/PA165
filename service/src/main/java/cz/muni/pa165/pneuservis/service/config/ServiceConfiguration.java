@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import java.util.Arrays;
+
 /**
  * Created by peter on 11/18/16.
  */
@@ -19,6 +21,8 @@ import org.springframework.context.annotation.Import;
 public class ServiceConfiguration {
     @Bean
     public Mapper dozer() {
-        return new DozerBeanMapper();
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        mapper.setMappingFiles(Arrays.asList("dozerCustomConverters.xml"));
+        return mapper;
     }
 }
