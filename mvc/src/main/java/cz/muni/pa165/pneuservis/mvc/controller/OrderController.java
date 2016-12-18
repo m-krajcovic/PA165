@@ -92,7 +92,7 @@ public class OrderController {
         OrderDTO save = orderFacade.receive(order);
 
         redirectAttributes.addFlashAttribute("alert_success", "Order created.");
-        return "redirect:" + uriBuilder.path("/orders/").toUriString();
+        return "redirect:" + uriBuilder.path("/orders/detail/{id}").buildAndExpand(save.getId()).encode().toUriString();
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
