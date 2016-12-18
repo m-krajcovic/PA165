@@ -2,11 +2,12 @@ package cz.muni.pa165.pneuservis.mvc.controller;
 
 import cz.muni.pa165.pneuservis.api.dto.OrderDTO;
 import cz.muni.pa165.pneuservis.api.dto.OrderStateDTO;
-import cz.muni.pa165.pneuservis.api.dto.TireDTO;
 import cz.muni.pa165.pneuservis.api.dto.UserDTO;
+import cz.muni.pa165.pneuservis.api.facade.AdditionalServiceFacade;
 import cz.muni.pa165.pneuservis.api.facade.OrderFacade;
 import cz.muni.pa165.pneuservis.api.facade.TireFacade;
 import cz.muni.pa165.pneuservis.api.facade.UserFacade;
+import cz.muni.pa165.pneuservis.mvc.form.NewOrderForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
+ * TODO: additional service in order creation
  * @author Michal Travnicek
  */
 @RequestMapping("/orders")
@@ -48,46 +47,52 @@ public class OrderController {
     @Autowired
     private TireFacade tireFacade;
 
+    @Autowired
+    private AdditionalServiceFacade additionalServiceFacade;
+
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createOrder(Model model) {
-        OrderDTO order = new OrderDTO();
-        order.setTire(new TireDTO());
-        model.addAttribute("order", order);
-        model.addAttribute("tireList", getTiresMap());
+        NewOrderForm orderForm = new NewOrderForm();
+        model.addAttribute("orderForm", orderForm);
+        model.addAttribute("additionalServices", additionalServiceFacade.findAll());
+        model.addAttribute("tires", tireFacade.findAll());
         return "orders/edit";
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveOrder(@Valid @ModelAttribute("order") OrderDTO order,
+    public String saveOrder(@Valid @ModelAttribute("orderForm") NewOrderForm orderForm,
                             BindingResult bindingResult,
                             @AuthenticationPrincipal UserDetails userDetails,
                             RedirectAttributes redirectAttributes,
                             Model model,
                             UriComponentsBuilder uriBuilder) {
 
-        logger.info("Saving Order: {}", order);
+        logger.info("Saving Order: {}", orderForm);
 
         if (bindingResult.hasErrors()) {
             for (FieldError fe : bindingResult.getFieldErrors()) {
                 model.addAttribute(fe.getField() + "_error", true);
             }
-            model.addAttribute("tireList", getTiresMap());
+            model.addAttribute("additionalServices", additionalServiceFacade.findAll());
+            model.addAttribute("tires", tireFacade.findAll());
             return "orders/edit";
         }
 
         UserDTO user = userFacade.findByEmail(userDetails.getUsername());
-        order.setId(null);
-        order.setState(OrderStateDTO.RECEIVED);
-        TireDTO tire = tireFacade.findOne(order.getTire().getId());
-        order.setTire(tire);
-        order.setPrice(tire.getPrice().multiply(new BigDecimal(order.getTireQuantity())));
-//        order.setDateCreated(Calendar.getInstance().getTime());
+        OrderDTO order = new OrderDTO();
+        order.setTire(tireFacade.findOne(orderForm.getTireId()));
+        order.setTireQuantity(orderForm.getTireQuantity());
+        order.setAddress(orderForm.getAddress());
+        order.setPhone(orderForm.getPhone());
+        order.setAdditionalServices(orderForm.getAdditionalServices().stream().map(i -> additionalServiceFacade.findOne(i)).collect(Collectors.toList()));
         order.setUser(user);
 
-        orderFacade.save(order);
-        return "redirect:" + uriBuilder.path("/orders/").toUriString();
+        OrderDTO save = orderFacade.receive(order);
+
+        redirectAttributes.addFlashAttribute("alert_success", "Order created.");
+        return "redirect:" + uriBuilder.path("/orders/detail/{id}").buildAndExpand(save.getId()).encode().toUriString();
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -153,7 +158,8 @@ public class OrderController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public String deleteOrder(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id, UriComponentsBuilder uriBuilder) {
+    public String deleteOrder(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id, UriComponentsBuilder uriBuilder,
+                              RedirectAttributes redirectAttributes) {
         OrderDTO order = orderFacade.findOne(id);
 
         if (order != null && !userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")) &&
@@ -162,25 +168,8 @@ public class OrderController {
         }
         orderFacade.delete(id);
 
+        redirectAttributes.addFlashAttribute("alert_success", "Order deleted.");
         return "redirect:" + uriBuilder.path("/orders/").toUriString();
-    }
-
-    private Map<Long, String> getTiresMap() {
-        List tires = tireFacade.findAll();
-
-        Map<Long, String> tireNames = new LinkedHashMap<>();
-        for (Iterator it = tires.iterator(); it.hasNext(); ) {
-            TireDTO tire = (TireDTO) it.next();
-            String temp = tire.getName() +
-                    ", type=" + tire.getTireType() +
-                    ", size='" + tire.getSize() + '\'' +
-                    ", manufacturer='" + tire.getManufacturer() + '\'' +
-                    ", vehicle='" + tire.getVehicleType() + '\'' +
-                    ", price=" + tire.getPrice();
-            tireNames.put(tire.getId(), temp);
-
-        }
-        return tireNames;
     }
 
 }

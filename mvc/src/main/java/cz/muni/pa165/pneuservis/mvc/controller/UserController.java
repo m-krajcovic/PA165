@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
+ * TODO: edit form validation
  * @author Michal Krajcovic <mkrajcovic@mail.muni.cz>
  */
 @RequestMapping("/user")

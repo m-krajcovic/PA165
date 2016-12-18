@@ -2,6 +2,7 @@ package cz.muni.pa165.pneuservis.api.dto;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -12,6 +13,7 @@ public class AdditionalServiceDTO {
     private Long id;
 
     @NotNull
+    @Size(min=1)
     private String name;
 
     private String description;
