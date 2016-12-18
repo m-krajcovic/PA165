@@ -41,4 +41,6 @@ public interface OrderFacade {
     void delete(Long id);
 
     List<OrderDTO> findByUser(UserDTO user);
+
+    OrderDTO receive(OrderDTO orderDTO);
 }

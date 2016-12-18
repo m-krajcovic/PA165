@@ -2,6 +2,7 @@ package cz.muni.pa165.pneuservis.api.dto;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -12,18 +13,22 @@ public class TireDTO {
     private Long id;
 
     @NotNull
+    @Size(min=1)
     private String name;
 
     @NotNull
     private TireTypeDTO tireType;
 
     @NotNull
+    @Size(min=1)
     private String size;
 
     @NotNull
+    @Size(min=1)
     private String manufacturer;
 
     @NotNull
+    @Size(min=1)
     private String vehicleType;
 
     @DecimalMin("0.0")

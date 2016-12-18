@@ -27,7 +27,7 @@
             <div class="input-group">
                 <form:input path="price" cssClass="form-control" id="price" placeholder="Price"
                             aria-describedby="currency-addon"/>
-                <span class="input-group-addon" id="currency-addon">Kc</span>
+                <span class="input-group-addon" id="currency-addon">CZK</span>
             </div>
         </div>
         <button type="submit" class="btn btn-default"><f:message key="button.submit"/></button>

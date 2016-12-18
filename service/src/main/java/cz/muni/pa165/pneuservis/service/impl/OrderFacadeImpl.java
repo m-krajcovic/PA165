@@ -54,4 +54,10 @@ public class OrderFacadeImpl implements OrderFacade {
         logger.info("Requested to find all Orders of User with id: {}", user.getId());
         return mappingService.mapTo(orderService.findByUser(mappingService.mapTo(user, User.class)), OrderDTO.class);
     }
+
+    @Override
+    public OrderDTO receive(OrderDTO orderDTO) {
+        Order o = mappingService.mapTo(orderDTO, Order.class);
+        return mappingService.mapTo(orderService.receive(o), OrderDTO.class);
+    }
 }

@@ -40,5 +40,17 @@ public interface OrderService {
      */
     void delete(Long id);
 
+    /**
+     * Returns all orders ordered by the given user.
+     * @param user
+     * @return
+     */
     List<Order> findByUser(User user);
+
+    /**
+     * Used to create new order. This method will calculate its price and set state to RECEIVED
+     * @param order
+     * @return
+     */
+    Order receive(Order order);
 }
