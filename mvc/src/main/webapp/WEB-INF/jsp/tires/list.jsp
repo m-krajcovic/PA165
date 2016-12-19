@@ -20,7 +20,8 @@
                     <p><f:message key="label.tire.delete.confirmation"/> <span class="name-placeholder"></span>?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><f:message key="button.cancel"/></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><f:message
+                            key="button.cancel"/></button>
                     <input type="submit" value="Delete" class="btn btn-danger">
                 </div>
             </div>
@@ -32,10 +33,12 @@
     <div class="row">
         <div class="col-lg-6">
             <select class="form-control" id="list-tires">
-                <option ${selected == 1 ? 'selected' : ''} value="${pageContext.request.contextPath}/tires/"><f:message key="title.tire.list"/>
+                <option ${selected == 1 ? 'selected' : ''} value="${pageContext.request.contextPath}/tires/"><f:message
+                        key="title.tire.list"/>
                 </option>
                 <option ${selected == 2 ? 'selected' : ''}
-                        value="${pageContext.request.contextPath}/tires/three-best-selling"><f:message key="label.tire.best.selling"/>
+                        value="${pageContext.request.contextPath}/tires/three-best-selling"><f:message
+                        key="label.tire.best.selling"/>
                 </option>
             </select>
         </div>
@@ -66,14 +69,16 @@
             <td><c:out value="${ts.manufacturer}"/></td>
             <td><c:out value="${ts.vehicleType}"/></td>
             <td><c:out value="${ts.price}"/></td>
+            <td><a href="${pageContext.request.contextPath}/orders/create/${ts.id}"
+                   class="btn btn-primary"><f:message key="label.order"/></a>
             <sec:authorize access="hasAuthority('ADMIN')">
-            <td>
                 <a href="${pageContext.request.contextPath}/tires/edit/${ts.id}"
-                   class="btn btn-default">Edit</a>
+                   class="btn btn-default"><f:message key="button.edit"/></a>
                 <a class="btn btn-danger" data-href="${pageContext.request.contextPath}/tires/delete/${ts.id}"
-                   data-toggle="modal" data-target="#confirm-delete-modal" data-name="${ts.name}"><f:message key="button.delete"/></a>
-            </td>
+                   data-toggle="modal" data-target="#confirm-delete-modal" data-name="${ts.name}"><f:message
+                        key="button.delete"/></a>
             </sec:authorize>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

@@ -9,11 +9,16 @@ import org.springframework.validation.Validator;
 public class UserEditFormValidator implements Validator {
     @Override
     public boolean supports(Class<?> aClass) {
-        return false;
+        return UserEditForm.class.isAssignableFrom(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
+        UserEditForm form = (UserEditForm) o;
 
+        String password = form.getPassword();
+        if (password != null && !password.isEmpty() && (password.length() < 6 || password.length() > 50)) {
+            errors.rejectValue("password", "size", "Password size must be between 6 and 50");
+        }
     }
 }

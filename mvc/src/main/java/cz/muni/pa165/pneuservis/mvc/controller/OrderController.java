@@ -61,6 +61,17 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
+    public String createOrderWithTire(@PathVariable long id, Model model) {
+        NewOrderForm orderForm = new NewOrderForm();
+        orderForm.setTireId(id);
+        model.addAttribute("orderForm", orderForm);
+        model.addAttribute("additionalServices", additionalServiceFacade.findAll());
+        model.addAttribute("tires", tireFacade.findAll());
+        return "orders/edit";
+    }
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveOrder(@Valid @ModelAttribute("orderForm") NewOrderForm orderForm,
                             BindingResult bindingResult,

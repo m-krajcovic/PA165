@@ -11,7 +11,7 @@
     <form:form method="post" modelAttribute="orderForm"
                action="${pageContext.request.contextPath}/orders/save">
     <div class="form-group">
-        <label for="tireId"><f:message key="label.tire.type"/></label>
+        <label for="tireId"><f:message key="label.tire"/></label>
         <form:select path="tireId" cssClass="form-control" id="tireId">
             <form:options items="${tires}" itemValue="id" itemLabel="name"/>
         </form:select>
@@ -37,9 +37,11 @@
     </div>
 
     <div class="form-group">
+        <label><f:message key="label.additional.services"/></label>
         <c:forEach items="${additionalServices}" var="as">
             <div class="checkbox">
-                <label><form:checkbox path="additionalServices" value="${as.id}"/><b>${as.name}</b> - ${as.description} (${as.price} CZK)</label>
+                <label><form:checkbox path="additionalServices" value="${as.id}"/><b>${as.name}</b> - ${as.description}
+                    (${as.price} CZK)</label>
             </div>
         </c:forEach>
     </div>
