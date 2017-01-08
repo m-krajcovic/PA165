@@ -64,6 +64,7 @@
                 <button type="submit" class="btn btn-danger"><f:message key="button.delete"/></button>
             </form>
         </div>
+    <span><br></span>
 
     <table class="table">
         <caption>Tires</caption>
@@ -101,6 +102,8 @@
         </tr>
         </tbody>
     </table>
+
+    <c:if test="${not empty order.additionalServices}">
     <table class="table">
         <caption><f:message key="label.additional.services"/></caption>
         <thead>
@@ -119,11 +122,14 @@
 
             </tr>
         </c:forEach>
+        </tbody>
+    </table>
+    </c:if>
+    <table class="table">
         <tr>
             <th colspan="4"><b><f:message key="label.order.total.price"><f:param
                     value="${order.price}"/></f:message></b></th>
         </tr>
-        </tbody>
     </table>
 
 </jsp:attribute>
