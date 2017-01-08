@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 /**
  * TODO: additional service in order creation
+ *
  * @author Michal Travnicek
  */
 @RequestMapping("/orders")
@@ -120,6 +121,7 @@ public class OrderController {
     public String listAll(Model model) {
         List<OrderDTO> orders;
         orders = orderFacade.findAll();
+        model.addAttribute("from", "all");
         model.addAttribute("orders", orders);
         return "orders/list";
     }
@@ -128,7 +130,8 @@ public class OrderController {
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable long id, Model model,
                          UriComponentsBuilder uriBuilder,
-                         @AuthenticationPrincipal UserDetails userDetails) {
+                         @AuthenticationPrincipal UserDetails userDetails,
+                         @RequestParam(required = false) String from) {
         OrderDTO order = orderFacade.findOne(id);
 
         if (order != null && !userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")) &&
@@ -136,7 +139,12 @@ public class OrderController {
             throw new AccessDeniedException("403");
         }
 
+        if (from != null) {
+            model.addAttribute("from", from);
+        }
+
         model.addAttribute("order", order);
+
         return "orders/detail";
     }
 
@@ -170,7 +178,7 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public String deleteOrder(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id, UriComponentsBuilder uriBuilder,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes, @RequestParam(required = false) String from) {
         OrderDTO order = orderFacade.findOne(id);
 
         if (order != null && !userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")) &&
@@ -180,6 +188,9 @@ public class OrderController {
         orderFacade.delete(id);
 
         redirectAttributes.addFlashAttribute("alert_success", "Order deleted.");
+        if (from != null && from.equals("all")) {
+            return "redirect:" + uriBuilder.path("/orders/all").toUriString();
+        }
         return "redirect:" + uriBuilder.path("/orders/").toUriString();
     }
 

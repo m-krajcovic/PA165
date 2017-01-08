@@ -14,6 +14,9 @@
 <my:template title="Order ${order.id}" activeNav="orderManagement">
 <jsp:attribute name="body">
 
+    <c:if test="${not empty from}">
+        <c:set var="fromParam" value="?from=${from}"/>
+    </c:if>
 
         <table class="table">
             <caption><f:message key="title.order"/></caption>
@@ -44,23 +47,23 @@
         <c:if test="${order.state=='RECEIVED'}">
             <sec:authorize access="hasAuthority('ADMIN')">
             <div class="col-xs-1">
-            <form method="get" action="${pageContext.request.contextPath}/orders/finish/${order.id}">
-                <button type="submit" class="btn btn-primary">Finish</button>
-            </form>
+                <form method="get" action="${pageContext.request.contextPath}/orders/finish/${order.id}">
+                    <button type="submit" class="btn btn-primary">Finish</button>
+                </form>
             </div>
             <div class="col-xs-1">
-            <form method="get" action="${pageContext.request.contextPath}/orders/cancel/${order.id}">
-                <button type="submit" class="btn btn-danger"><f:message key="button.cancel"/></button>
-            </form>
+                <form method="get" action="${pageContext.request.contextPath}/orders/cancel/${order.id}">
+                    <button type="submit" class="btn btn-danger"><f:message key="button.cancel"/></button>
+                </form>
             </div>
             </sec:authorize>
         </c:if>
         <div class="col-xs-1">
-            <form method="post" action="${pageContext.request.contextPath}/orders/delete/${order.id}">
-            <sec:csrfInput/>
+            <form method="post" action="${pageContext.request.contextPath}/orders/delete/${order.id}${fromParam}">
+                <sec:csrfInput/>
                 <button type="submit" class="btn btn-danger"><f:message key="button.delete"/></button>
             </form>
-    </div>
+        </div>
 
     <table class="table">
         <caption>Tires</caption>
@@ -77,24 +80,24 @@
         </tr>
         </thead>
         <tbody>
-            
-            <c:set var="tire" value="${order.tire}"/>            
-            <c:set var="tireTotal" value="${tire.price*order.tireQuantity}"/>
 
-            <tr>
-                <td>${tire.name}</td>
-                <td>${tire.tireType}</td>
-                <td>${tire.size}</td>
-                <td>${tire.manufacturer}</td>
-                <td>${tire.vehicleType}</td>
-                <td>${order.tireQuantity}</td>                
-                <td>${tire.price}</td>
-                
-                <td>${tireTotal}</td>
-            </tr>
+        <c:set var="tire" value="${order.tire}"/>
+        <c:set var="tireTotal" value="${tire.price*order.tireQuantity}"/>
+
+        <tr>
+            <td>${tire.name}</td>
+            <td>${tire.tireType}</td>
+            <td>${tire.size}</td>
+            <td>${tire.manufacturer}</td>
+            <td>${tire.vehicleType}</td>
+            <td>${order.tireQuantity}</td>
+            <td>${tire.price}</td>
+
+            <td>${tireTotal}</td>
+        </tr>
         <tr>
             <th colspan="9"></th>
-       
+
         </tr>
         </tbody>
     </table>
@@ -112,12 +115,13 @@
             <tr>
                 <td>${item.name}</td>
                 <td>${item.description}</td>
-                <td><c:out value="${item.price}"/></td> 
+                <td><c:out value="${item.price}"/></td>
 
             </tr>
         </c:forEach>
         <tr>
-            <th colspan="4"><b><f:message key="label.order.total.price"><f:param value="${order.price}"/></f:message></b></th>
+            <th colspan="4"><b><f:message key="label.order.total.price"><f:param
+                    value="${order.price}"/></f:message></b></th>
         </tr>
         </tbody>
     </table>

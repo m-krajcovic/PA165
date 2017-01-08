@@ -13,8 +13,12 @@
 <my:template titleMessageKey="title.order.list" activeNav="orderManagement">
 <jsp:attribute name="body">
     
-    <a href="${pageContext.request.contextPath}/orders/create/" class="btn btn-primary"><f:message key="label.order.create"/></a>
-    
+    <a href="${pageContext.request.contextPath}/orders/create/" class="btn btn-primary"><f:message
+            key="label.order.create"/></a>
+
+    <c:if test="${not empty from}">
+        <c:set var="fromParam" value="?from=${from}"/>
+    </c:if>
     <table class="table">
         <thead>
         <tr>
@@ -37,7 +41,8 @@
                 <td><c:out value="${order.phone}"/></td>
                 <td><c:out value="${order.address}"/></td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/orders/detail/${order.id}" class="btn btn-primary"><f:message key="button.detail"/></a>
+                    <a href="${pageContext.request.contextPath}/orders/detail/${order.id}${fromParam}"
+                       class="btn btn-primary"><f:message key="button.detail"/></a>
                 </td>
             </tr>
         </c:forEach>
